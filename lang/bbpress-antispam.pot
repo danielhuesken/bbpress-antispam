@@ -1,0 +1,197 @@
+# Copyright (C) 2010 bbPress Antispam
+# This file is distributed under the same license as the bbPress Antispam package.
+msgid ""
+msgstr ""
+"Project-Id-Version: bbPress Antispam 0.5\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/bbpress-antispam\n"
+"POT-Creation-Date: 2011-11-27 08:10:29+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: bbpress-antispam.php:107
+msgid "<strong>bbPress ANTISPAM</strong>: CSS Hack!"
+msgstr ""
+
+#: bbpress-antispam.php:124
+msgid "<strong>bbPress ANTISPAM</strong>: Honey Pot!"
+msgstr ""
+
+#: bbpress-antispam.php:129
+msgid "<strong>bbPress ANTISPAM</strong>: Fake IP!"
+msgstr ""
+
+#: bbpress-antispam.php:134
+msgid "<strong>bbPress ANTISPAM</strong>: Referer!"
+msgstr ""
+
+#: bbpress-antispam.php:139
+msgid "<strong>bbPress ANTISPAM</strong>: Spam IP!"
+msgstr ""
+
+#: bbpress-antispam.php:144
+msgid "<strong>bbPress ANTISPAM</strong>: Spam content!"
+msgstr ""
+
+#: bbpress-antispam.php:156
+msgid "bbPress ANTISPAM: Honey Pot:"
+msgstr ""
+
+#: bbpress-antispam.php:163
+msgid "bbPress ANTISPAM: Fake IP:"
+msgstr ""
+
+#: bbpress-antispam.php:170
+msgid "bbPress ANTISPAM: Referer:"
+msgstr ""
+
+#: bbpress-antispam.php:177
+msgid "bbPress ANTISPAM: Spam IP:"
+msgstr ""
+
+#: bbpress-antispam.php:184
+msgid "bbPress ANTISPAM: Spam content:"
+msgstr ""
+
+#: bbpress-antispam.php:191
+msgid "bbPress ANTISPAM: Spam author:"
+msgstr ""
+
+#: bbpress-antispam.php:287
+msgid "Blocked"
+msgstr ""
+
+#: bbpress-antispam.php:311
+msgid "Date"
+msgstr ""
+
+#: bbpress-antispam.php:312
+msgid "Summary"
+msgstr ""
+
+#: bbpress-antispam.php:313
+msgid "CSS Hack"
+msgstr ""
+
+#: bbpress-antispam.php:314
+msgid "Honey Pot"
+msgstr ""
+
+#: bbpress-antispam.php:315
+msgid "Fake IP"
+msgstr ""
+
+#: bbpress-antispam.php:316
+msgid "Referer"
+msgstr ""
+
+#: bbpress-antispam.php:317
+msgid "Spam IP"
+msgstr ""
+
+#: bbpress-antispam.php:318
+msgid "Spam content"
+msgstr ""
+
+#: bbpress-antispam.php:319
+msgid "Spam author"
+msgstr ""
+
+#: bbpress-antispam.php:354
+msgid "Donate"
+msgstr ""
+
+#: bbpress-antispam.php:361
+msgid "Antispam"
+msgstr ""
+
+#: bbpress-antispam.php:363
+msgid "Generel Settings"
+msgstr ""
+
+#: bbpress-antispam.php:368
+msgid "Use and check with Css Hack"
+msgstr ""
+
+#: bbpress-antispam.php:371
+msgid "Use Hony Pot Project"
+msgstr ""
+
+#: bbpress-antispam.php:375
+msgid "Chack for Fake IP"
+msgstr ""
+
+#: bbpress-antispam.php:378
+msgid "Check Referer"
+msgstr ""
+
+#: bbpress-antispam.php:381
+msgid "Is IP already marked as Spam IP"
+msgstr ""
+
+#: bbpress-antispam.php:384
+msgid "Is content already marked as Spam"
+msgstr ""
+
+#: bbpress-antispam.php:387
+msgid "Is Author already marked as Spam Author"
+msgstr ""
+
+#: bbpress-antispam.php:394
+msgid "Antispam Configuration"
+msgstr ""
+
+#: bbpress-antispam.php:401
+msgid "Show chart in Dashboard"
+msgstr ""
+
+#: bbpress-antispam.php:404
+msgid "Prepend titel with SAPM massage on move to spam"
+msgstr ""
+
+#: bbpress-antispam.php:407
+msgid "Do not scan logged in users"
+msgstr ""
+
+#: bbpress-antispam.php:415 bbpress-antispam.php:428 bbpress-antispam.php:441
+#: bbpress-antispam.php:454 bbpress-antispam.php:467 bbpress-antispam.php:480
+msgid "Block"
+msgstr ""
+
+#: bbpress-antispam.php:418 bbpress-antispam.php:434 bbpress-antispam.php:447
+#: bbpress-antispam.php:460 bbpress-antispam.php:473 bbpress-antispam.php:486
+#: bbpress-antispam.php:496
+msgid "Disable"
+msgstr ""
+
+#: bbpress-antispam.php:425
+msgid "Hony Pot Key"
+msgstr ""
+
+#: bbpress-antispam.php:431 bbpress-antispam.php:444 bbpress-antispam.php:457
+#: bbpress-antispam.php:470 bbpress-antispam.php:483 bbpress-antispam.php:493
+msgid "Move to Spam"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "bbPress Antispam"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http:/danielhuesken.de/portfolio/bbpress-antispam"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Antispam for bbPress 2.0"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Daniel H&uuml;sken"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://danielhuesken.de"
+msgstr ""
