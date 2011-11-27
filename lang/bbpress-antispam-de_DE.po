@@ -1,0 +1,250 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: bbPress Antispam 0.5\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/bbpress-antispam\n"
+"POT-Creation-Date: 2011-11-27 08:10:29+00:00\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: \n"
+"X-Poedit-Country: \n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: bbpress-antispam.php:107
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: CSS Hack!"
+msgstr ""
+
+#: bbpress-antispam.php:124
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: Honey Pot!"
+msgstr ""
+
+#: bbpress-antispam.php:129
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: Fake IP!"
+msgstr ""
+
+#: bbpress-antispam.php:134
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: Referer!"
+msgstr ""
+
+#: bbpress-antispam.php:139
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: Spam IP!"
+msgstr ""
+
+#: bbpress-antispam.php:144
+#@ bbpress-antispam
+msgid "<strong>bbPress ANTISPAM</strong>: Spam content!"
+msgstr ""
+
+#: bbpress-antispam.php:156
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Honey Pot:"
+msgstr ""
+
+#: bbpress-antispam.php:163
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Fake IP:"
+msgstr ""
+
+#: bbpress-antispam.php:170
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Referer:"
+msgstr ""
+
+#: bbpress-antispam.php:177
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Spam IP:"
+msgstr ""
+
+#: bbpress-antispam.php:184
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Spam content:"
+msgstr ""
+
+#: bbpress-antispam.php:191
+#@ bbpress-antispam
+msgid "bbPress ANTISPAM: Spam author:"
+msgstr ""
+
+#: bbpress-antispam.php:287
+#@ bbpress-antispam
+msgid "Blocked"
+msgstr ""
+
+#: bbpress-antispam.php:311
+#@ bbpress-antispam
+msgid "Date"
+msgstr "Datum"
+
+#: bbpress-antispam.php:312
+#@ bbpress-antispam
+msgid "Summary"
+msgstr "Zusammen"
+
+#: bbpress-antispam.php:313
+#@ bbpress-antispam
+msgid "CSS Hack"
+msgstr ""
+
+#: bbpress-antispam.php:314
+#@ bbpress-antispam
+msgid "Honey Pot"
+msgstr ""
+
+#: bbpress-antispam.php:315
+#@ bbpress-antispam
+msgid "Fake IP"
+msgstr ""
+
+#: bbpress-antispam.php:316
+#@ bbpress-antispam
+msgid "Referer"
+msgstr ""
+
+#: bbpress-antispam.php:317
+#@ bbpress-antispam
+msgid "Spam IP"
+msgstr ""
+
+#: bbpress-antispam.php:318
+#@ bbpress-antispam
+msgid "Spam content"
+msgstr ""
+
+#: bbpress-antispam.php:319
+#@ bbpress-antispam
+msgid "Spam author"
+msgstr ""
+
+#: bbpress-antispam.php:354
+#@ bbpress-antispam
+msgid "Donate"
+msgstr ""
+
+#: bbpress-antispam.php:361
+#@ bbpress-antispam
+msgid "Antispam"
+msgstr ""
+
+#: bbpress-antispam.php:363
+#@ bbpress-antispam
+msgid "Generel Settings"
+msgstr "Generele Einstellungen"
+
+#: bbpress-antispam.php:368
+#@ bbpress-antispam
+msgid "Use and check with Css Hack"
+msgstr ""
+
+#: bbpress-antispam.php:371
+#@ bbpress-antispam
+msgid "Use Hony Pot Project"
+msgstr "Hony Pot Project benutzen"
+
+#: bbpress-antispam.php:375
+#@ bbpress-antispam
+msgid "Chack for Fake IP"
+msgstr "Auf Fake IP prüfen"
+
+#: bbpress-antispam.php:378
+#@ bbpress-antispam
+msgid "Check Referer"
+msgstr "Referer prüfen"
+
+#: bbpress-antispam.php:381
+#@ bbpress-antispam
+msgid "Is IP already marked as Spam IP"
+msgstr "Ist die IP schon in Spams"
+
+#: bbpress-antispam.php:384
+#@ bbpress-antispam
+msgid "Is content already marked as Spam"
+msgstr "Ist der Post der selbe in anderen Spams"
+
+#: bbpress-antispam.php:387
+#@ bbpress-antispam
+msgid "Is Author already marked as Spam Author"
+msgstr "Ist der Author schon in anderen Spams"
+
+#: bbpress-antispam.php:394
+#@ bbpress-antispam
+msgid "Antispam Configuration"
+msgstr "Antispam Einstellungen"
+
+#: bbpress-antispam.php:401
+#@ bbpress-antispam
+msgid "Show chart in Dashboard"
+msgstr "Zeige Chart im Dashboard"
+
+#: bbpress-antispam.php:404
+#@ bbpress-antispam
+msgid "Prepend titel with SAPM massage on move to spam"
+msgstr "SPAM Meldung zum Title hinzufügen"
+
+#: bbpress-antispam.php:407
+#@ bbpress-antispam
+msgid "Do not scan logged in users"
+msgstr "Eingeloggte Nutzer nicht scannen"
+
+#: bbpress-antispam.php:415 bbpress-antispam.php:428 bbpress-antispam.php:441
+#: bbpress-antispam.php:454 bbpress-antispam.php:467 bbpress-antispam.php:480
+#@ bbpress-antispam
+msgid "Block"
+msgstr "Blockiert"
+
+#: bbpress-antispam.php:418 bbpress-antispam.php:434 bbpress-antispam.php:447
+#: bbpress-antispam.php:460 bbpress-antispam.php:473 bbpress-antispam.php:486
+#: bbpress-antispam.php:496
+#@ bbpress-antispam
+msgid "Disable"
+msgstr "Aus"
+
+#: bbpress-antispam.php:425
+#@ bbpress-antispam
+msgid "Hony Pot Key"
+msgstr ""
+
+#: bbpress-antispam.php:431 bbpress-antispam.php:444 bbpress-antispam.php:457
+#: bbpress-antispam.php:470 bbpress-antispam.php:483 bbpress-antispam.php:493
+#@ bbpress-antispam
+msgid "Move to Spam"
+msgstr "In Spam verschieben"
+
+#. Plugin Name of the plugin/theme
+#@ bbpress-antispam
+msgid "bbPress Antispam"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+#@ bbpress-antispam
+msgid "http:/danielhuesken.de/portfolio/bbpress-antispam"
+msgstr ""
+
+#. Description of the plugin/theme
+#@ bbpress-antispam
+msgid "Antispam for bbPress 2.0"
+msgstr "Antispam für bbPress 2.0"
+
+#. Author of the plugin/theme
+#@ bbpress-antispam
+msgid "Daniel H&uuml;sken"
+msgstr ""
+
+#. Author URI of the plugin/theme
+#@ bbpress-antispam
+msgid "http://danielhuesken.de"
+msgstr ""
+
