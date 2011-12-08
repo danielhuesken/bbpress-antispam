@@ -27,8 +27,9 @@ It is free from Payment and don't send anything to a server.
 
 
 == Changelog ==
-= 0.6 0
+= 0.6 =
 * Added: Send mail on new topic/reply
+* Changed: Default settings
 
 = 0.5 =
 * Initial release
