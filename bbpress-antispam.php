@@ -38,17 +38,17 @@ class bbPress_Antispam {
 	private $plugin_base_name='bbpress-antispam';
 	private $spamcount=0;
 	private $spamchart=array();
-	private $spamtypes=array('csshack','honey','fakeip','referer','ipspam','contentspam','authorspam');
+	private $spamtypes=array('csshack','honey','fakeip','referrer','ipspam','contentspam','authorspam');
 
 	public function __construct() {
 		if ((defined('DOING_AJAX') && DOING_AJAX) or (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) 
 			return;
-		//set vars corectly
+		//set vars correctly
 		$this->md5_sign=substr(md5(AUTH_KEY),8,16);
 		$this->today=date_i18n('Y-m-d');
 		$this->plugin_base_name=untrailingslashit(dirname(plugin_basename(__FILE__)));
 		$this->spamcount=get_option('bbpress_antispam_spamcount',$this->spamcount);
-		$this->spamchart=get_option('bbpress_antispam_spamcart',$this->spamchart);
+		$this->spamchart=get_option('bbpress_antispam_spamchart',$this->spamchart);
 		// add var to spam count
 		foreach($this->spamtypes as $type) {
 			if (!isset($this->spamchart[$this->today][$type]))
@@ -134,9 +134,9 @@ class bbPress_Antispam {
 			$this->count_spam('fakeip');	
 			return $content;
 		}
-		if (get_option('bbpress_antispam_cfg_checkreferer','spam')=='block' && $this->is_flase_referer() ) {
+		if (get_option('bbpress_antispam_cfg_checkreferrer','spam')=='block' && $this->is_flase_referrer() ) {
 			bbp_add_error( 'bbp_reply_content', __( '<strong>bbPress ANTISPAM</strong>: Referer!', 'bbpress-antispam' ) );
-			$this->count_spam('referer');			
+			$this->count_spam('referrer');			
 			return $content;
 		}
 		if (get_option('bbpress_antispam_cfg_checkipspam','block')=='block' && $this->is_ip_spam() ) {
@@ -169,11 +169,11 @@ class bbPress_Antispam {
 			$this->count_spam('fakeip');
 			return $post_data;
 		}
-		if (get_option('bbpress_antispam_cfg_checkreferer','spam')=='spam' && $this->is_flase_referer()) {
+		if (get_option('bbpress_antispam_cfg_checkreferrer','spam')=='spam' && $this->is_flase_referrer()) {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
-				$post_data['post_title'] = __( 'bbPress ANTISPAM: Referer:', 'bbpress-antispam' )." ".$post_data['post_title'];
+				$post_data['post_title'] = __( 'bbPress ANTISPAM: Referrer:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
-			$this->count_spam('referer');
+			$this->count_spam('referrer');
 			return $post_data;
 		}
 		if (get_option('bbpress_antispam_cfg_checkipspam','block')=='spam' && $this->is_ip_spam()) {
@@ -205,7 +205,7 @@ class bbPress_Antispam {
 		if (in_array($type,$this->spamtypes))
 			$this->spamchart[$this->today][$type]++;
 		$this->spamcount++;
-		update_option('bbpress_antispam_spamcart',$this->spamchart);
+		update_option('bbpress_antispam_spamchart',$this->spamchart);
 		update_option('bbpress_antispam_spamcount',$this->spamcount);
 	}
 
@@ -300,11 +300,11 @@ class bbPress_Antispam {
 			return true;
 	}
 
-	private function is_flase_referer() {
-		$referer=strtolower($_SERVER['HTTP_REFERER']);
-		if ( empty($referer) )
+	private function is_flase_referrer() {
+		$referrer=strtolower($_SERVER['HTTP_REFERER']);
+		if ( empty($referrer) )
 			return true;
-		if (strpos($referer,strtolower(get_bloginfo('url'))) == 0)
+		if (strpos($referrer,strtolower(get_bloginfo('url'))) == 0)
 			return false;
 		else
 			return true;
@@ -385,7 +385,7 @@ class bbPress_Antispam {
 				data.addColumn('number', '<?PHP _e('CSS Hack','bbpress-antispam'); ?>');
 				data.addColumn('number', '<?PHP _e('Honey Pot','bbpress-antispam'); ?>');
 				data.addColumn('number', '<?PHP _e('Fake IP','bbpress-antispam'); ?>');
-				data.addColumn('number', '<?PHP _e('Referer','bbpress-antispam'); ?>');
+				data.addColumn('number', '<?PHP _e('Referrer','bbpress-antispam'); ?>');
 				data.addColumn('number', '<?PHP _e('Spam IP','bbpress-antispam'); ?>');
 				data.addColumn('number', '<?PHP _e('Spam content','bbpress-antispam'); ?>');
 				data.addColumn('number', '<?PHP _e('Spam author','bbpress-antispam'); ?>');
@@ -448,8 +448,8 @@ class bbPress_Antispam {
 		add_settings_field('bbpress_antispam_cfg_checkfakeip',__( 'Check for fake IP address', 'bbpress-antispam'), array($this,'option_callback_checkfakeip'),'bbpress','bbpress_antispam');
 	 	register_setting('bbpress','bbpress_antispam_cfg_checkfakeip','strval');
 		
-		add_settings_field('bbpress_antispam_cfg_checkreferer',__( 'Check Referer', 'bbpress-antispam'), array($this,'option_callback_checkreferer'),'bbpress','bbpress_antispam');
-	 	register_setting('bbpress','bbpress_antispam_cfg_checkreferer','strval');
+		add_settings_field('bbpress_antispam_cfg_checkreferrer',__( 'Check Referrer', 'bbpress-antispam'), array($this,'option_callback_checkreferrer'),'bbpress','bbpress_antispam');
+	 	register_setting('bbpress','bbpress_antispam_cfg_checkreferrer','strval');
 		
 		add_settings_field('bbpress_antispam_cfg_checkipspam',__( 'Is IP already marked as Spam IP', 'bbpress-antispam'), array($this,'option_callback_checkipspam'),'bbpress','bbpress_antispam');
 	 	register_setting('bbpress','bbpress_antispam_cfg_checkipspam','strval');
@@ -529,16 +529,16 @@ class bbPress_Antispam {
 		<?php
 	}	
 
-	public function option_callback_checkreferer() {
+	public function option_callback_checkreferrer() {
 		?>
-		<input id="bbpress_antispam_cfg_checkreferer_block" name="bbpress_antispam_cfg_checkreferer" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkreferer')=='block' ); ?> />
-		<label for="bbpress_antispam_cfg_checkreferer_block"><?php _e( 'Block', 'bbpress-antispam' ); ?></label>
+		<input id="bbpress_antispam_cfg_checkreferrer_block" name="bbpress_antispam_cfg_checkreferrer" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkreferrer')=='block' ); ?> />
+		<label for="bbpress_antispam_cfg_checkreferrer_block"><?php _e( 'Block', 'bbpress-antispam' ); ?></label>
 		<br />
-		<input id="bbpress_antispam_cfg_checkreferer_spam" name="bbpress_antispam_cfg_checkreferer" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkreferer','spam')=='spam' ); ?> />
-		<label for="bbpress_antispam_cfg_checkreferer_spam"><?php _e( 'Move to Spam', 'bbpress-antispam' ); ?></label>
+		<input id="bbpress_antispam_cfg_checkreferrer_spam" name="bbpress_antispam_cfg_checkreferrer" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkreferrer','spam')=='spam' ); ?> />
+		<label for="bbpress_antispam_cfg_checkreferrer_spam"><?php _e( 'Move to Spam', 'bbpress-antispam' ); ?></label>
 		<br />
-		<input id="bbpress_antispam_cfg_checkreferer_off" name="bbpress_antispam_cfg_checkreferer" type="radio" value="off" <?php checked( get_option('bbpress_antispam_cfg_checkreferer')=='off' ); ?> />
-		<label for="bbpress_antispam_cfg_checkreferer_off"><?php _e( 'Disable', 'bbpress-antispam' ); ?></label>
+		<input id="bbpress_antispam_cfg_checkreferrer_off" name="bbpress_antispam_cfg_checkreferrer" type="radio" value="off" <?php checked( get_option('bbpress_antispam_cfg_checkreferrer')=='off' ); ?> />
+		<label for="bbpress_antispam_cfg_checkreferrer_off"><?php _e( 'Disable', 'bbpress-antispam' ); ?></label>
 		<?php
 	}
 	

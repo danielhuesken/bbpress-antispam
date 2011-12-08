@@ -30,6 +30,7 @@ It is free from Payment and don't send anything to a server.
 = 0.6 =
 * Added: Send mail on new topic/reply
 * Changed: Default settings
+* Fixed: Grammar
 
 = 0.5 =
 * Initial release
