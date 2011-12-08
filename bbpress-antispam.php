@@ -135,7 +135,7 @@ class bbPress_Antispam {
 			return $content;
 		}
 		if (get_option('bbpress_antispam_cfg_checkreferrer','spam')=='block' && $this->is_flase_referrer() ) {
-			bbp_add_error( 'bbp_reply_content', __( '<strong>bbPress ANTISPAM</strong>: Referer!', 'bbpress-antispam' ) );
+			bbp_add_error( 'bbp_reply_content', __( '<strong>bbPress ANTISPAM</strong>: Referrer!', 'bbpress-antispam' ) );
 			$this->count_spam('referrer');			
 			return $content;
 		}
