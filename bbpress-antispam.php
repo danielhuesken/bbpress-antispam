@@ -33,7 +33,7 @@ if ( !defined( 'ABSPATH' ) )
 	exit;
 
 class bbPress_Antispam {
-	private $md5_sign='890abcdef';
+	private $key_sign='890abcdef123';
 	private $today='0000-00-00';
 	private $plugin_base_name='bbpress-antispam';
 	private $spamcount=0;
@@ -44,7 +44,7 @@ class bbPress_Antispam {
 		if ((defined('DOING_AJAX') && DOING_AJAX) or (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)) 
 			return;
 		//set vars correctly
-		$this->md5_sign=substr(md5(AUTH_KEY),8,16);
+		$this->key_sign=substr(md5(md5(AUTH_KEY)),(int)date('n')+7,12);
 		$this->today=date_i18n('Y-m-d');
 		$this->plugin_base_name=untrailingslashit(dirname(plugin_basename(__FILE__)));
 		$this->spamcount=get_option('bbpress_antispam_spamcount',$this->spamcount);
@@ -54,7 +54,7 @@ class bbPress_Antispam {
 			if (!isset($this->spamchart[$this->today][$type]))
 				$this->spamchart[$this->today][$type]=0;		
 		}
-		//remove old days for chart
+		//remove old days from chart
 		if (count($this->spamchart)>30) {
 			$mustremoved=count($this->spamchart)-30;
 			foreach($this->spamchart as $date => $values) {
@@ -98,8 +98,8 @@ class bbPress_Antispam {
 	}
 	
 	public function ob_callback_template_redirect($buffer) {
-		$buffer=preg_replace("#<textarea(.*?)name=([\"\'])bbp_topic_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_topic_content_css\" tabindex=\"1112\" name=\"bbp_topic_content\" rows=\"6\" cols=\"2\"></textarea><textarea$1name=$2bbp_topic_content-".$this->md5_sign."$3$4</textarea>", $buffer, 1);
-		$buffer=preg_replace("#<textarea(.*?)name=([\"\'])bbp_reply_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_reply_content_css\" tabindex=\"1112\" name=\"bbp_reply_content\" rows=\"6\"></textarea><textarea$1name=$2bbp_reply_content-".$this->md5_sign."$3$4</textarea>", $buffer, 1);
+		$buffer=preg_replace("#<textarea(.*?)name=([\"\'])bbp_topic_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_topic_content_css\" tabindex=\"1112\" name=\"bbp_topic_content\" rows=\"6\" cols=\"2\"></textarea><textarea$1name=$2bbp_topic_content-".$this->key_sign."$3$4</textarea>", $buffer, 1);
+		$buffer=preg_replace("#<textarea(.*?)name=([\"\'])bbp_reply_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_reply_content_css\" tabindex=\"1112\" name=\"bbp_reply_content\" rows=\"6\"></textarea><textarea$1name=$2bbp_reply_content-".$this->key_sign."$3$4</textarea>", $buffer, 1);
 		return $buffer;
 	}
 
@@ -114,12 +114,12 @@ class bbPress_Antispam {
 			}
 			//get real content	
 			if (current_filter()=='bbp_new_topic_pre_content') {
-				$contentname='bbp_topic_content-'.$this->md5_sign;
+				$contentname='bbp_topic_content-'.$this->key_sign;
 				if ( !empty( $_POST[$contentname] ) )
 					$content = $_POST[$contentname];
 			}
 			if (current_filter()=='bbp_new_reply_pre_content') {
-				$contentname='bbp_reply_content-'.$this->md5_sign;
+				$contentname='bbp_reply_content-'.$this->key_sign;
 				if ( !empty( $_POST[$contentname] ) )
 					$content = $_POST[$contentname];
 			}
