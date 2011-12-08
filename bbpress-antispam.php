@@ -4,7 +4,7 @@ Plugin Name: bbPress Antispam
 Plugin URI: http:/danielhuesken.de/portfolio/bbpress-antispam
 Description: Antispam for bbPress 2.0
 Author: Daniel H&uuml;sken
-Version: 0.5
+Version: 0.6
 Author URI: http://danielhuesken.de
 Text Domain: bbpress-antispam
 Domain Path: /lang/
@@ -73,6 +73,10 @@ class bbPress_Antispam {
 		add_filter('bbp_new_reply_pre_content',array($this,'post_pre_content'),1);
 		add_filter('bbp_new_topic_pre_insert',array($this,'post_pre_insert'),1);
 		add_filter('bbp_new_reply_pre_insert',array($this,'post_pre_insert'),1);
+		if (get_option( 'bbpress_antispam_cfg_sendmail', 'off' )!='off') {
+			add_action('bbp_new_topic',array($this,'send_mail_topic'),100,1);
+			add_action('bbp_new_reply',array($this,'send_mail_reply'),100,1);
+		}
 		add_action('bbp_dashboard_widget_right_now_content_table_end',array($this,'add_blocked_on_table_end'));
 		if (get_option( 'bbpress_antispam_cfg_schowdashboardchart', true ))
 			add_action('wp_dashboard_setup',array($this,'init_dashboard_chart'));
@@ -130,7 +134,7 @@ class bbPress_Antispam {
 			$this->count_spam('fakeip');	
 			return $content;
 		}
-		if (get_option('bbpress_antispam_cfg_checkreferer','block')=='block' && $this->is_flase_referer() ) {
+		if (get_option('bbpress_antispam_cfg_checkreferer','spam')=='block' && $this->is_flase_referer() ) {
 			bbp_add_error( 'bbp_reply_content', __( '<strong>bbPress ANTISPAM</strong>: Referer!', 'bbpress-antispam' ) );
 			$this->count_spam('referer');			
 			return $content;
@@ -140,7 +144,7 @@ class bbPress_Antispam {
 			$this->count_spam('ipspam');			
 			return $content;
 		}
-		if (get_option('bbpress_antispam_cfg_checkcontentspam','spam')=='block' && $this->is_content_spam($content) ) {
+		if (get_option('bbpress_antispam_cfg_checkcontentspam','block')=='block' && $this->is_content_spam($content) ) {
 			bbp_add_error( 'bbp_reply_content', __( '<strong>bbPress ANTISPAM</strong>: Spam content!', 'bbpress-antispam' ) );
 			$this->count_spam('contentspam');			
 			return $content;
@@ -162,10 +166,10 @@ class bbPress_Antispam {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
 				$post_data['post_title'] = __( 'bbPress ANTISPAM: Fake IP:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
-			$this->count_spam('fakeip');	
+			$this->count_spam('fakeip');
 			return $post_data;
 		}
-		if (get_option('bbpress_antispam_cfg_checkreferer','block')=='spam' && $this->is_flase_referer()) {
+		if (get_option('bbpress_antispam_cfg_checkreferer','spam')=='spam' && $this->is_flase_referer()) {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
 				$post_data['post_title'] = __( 'bbPress ANTISPAM: Referer:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
@@ -176,21 +180,21 @@ class bbPress_Antispam {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
 				$post_data['post_title'] = __( 'bbPress ANTISPAM: Spam IP:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
-			$this->count_spam('ipspam');	
+			$this->count_spam('ipspam');
 			return $post_data;
 		}
-		if (get_option('bbpress_antispam_cfg_checkcontentspam','spam')=='spam' && $this->is_content_spam($post_data['post_content'])) {
+		if (get_option('bbpress_antispam_cfg_checkcontentspam','block')=='spam' && $this->is_content_spam($post_data['post_content'])) {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
 				$post_data['post_title'] = __( 'bbPress ANTISPAM: Spam content:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
-			$this->count_spam('contentspam');	
+			$this->count_spam('contentspam');
 			return $post_data;
 		}
 		if (get_option('bbpress_antispam_cfg_checkauthorspam','spam')=='spam' && $this->is_author_spam($post_data['post_author'])) {
 			if (get_option( 'bbpress_antispam_cfg_prependspamtitle', true ))
 				$post_data['post_title'] = __( 'bbPress ANTISPAM: Spam author:', 'bbpress-antispam' )." ".$post_data['post_title'];
 			$post_data['post_status'] = bbp_get_spam_status_id();
-			$this->count_spam('authorspam');	
+			$this->count_spam('authorspam');
 			return $post_data;
 		}
 		return $post_data;
@@ -204,7 +208,75 @@ class bbPress_Antispam {
 		update_option('bbpress_antispam_spamcart',$this->spamchart);
 		update_option('bbpress_antispam_spamcount',$this->spamcount);
 	}
-	
+
+	public function send_mail_reply($reply_id) {
+		if ((get_option('bbpress_antispam_cfg_sendmail', 'off')=='spam' and bbp_get_reply_status($reply_id) != bbp_get_spam_status_id()))
+			return;
+		$author_mail=bbp_get_reply_author_email($reply_id);
+		$author_name=bbp_get_reply_author_display_name($reply_id);
+		if (bbp_get_reply_status($reply_id) == bbp_get_spam_status_id()) {
+			$subject = sprintf( __('[%1$s] SPAM reply on: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($reply_id) );
+			$notify_message  = sprintf( __( 'New "marked as SPAM" reply on the topic "%s"','bbpress-antispam' ), bbp_get_reply_title($reply_id) ) . "\r\n";
+		} else {
+			$subject = sprintf( __('[%1$s] Reply on: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($reply_id) );
+			$notify_message  = sprintf( __( 'New reply on the topic "%s"','bbpress-antispam' ),  bbp_get_topic_title($reply_id) ) . "\r\n";
+		}
+		$notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)','bbpress-antispam'), $author_name, $_SERVER['REMOTE_ADDR'], @gethostbyaddr($_SERVER['REMOTE_ADDR']) ) . "\r\n";
+		$notify_message .= sprintf( __('E-mail : %s','bbpress-antispam'), $author_mail ) . "\r\n";
+		$notify_message .= sprintf( __('URL    : %s','bbpress-antispam'), bbp_reply_author_url($reply_id) ) . "\r\n";
+		$notify_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s','bbpress-antispam'), $_SERVER['REMOTE_ADDR'] ) . "\r\n";
+		$notify_message .= __('Reply: ','bbpress-antispam') . "\r\n" . strip_tags(bbp_get_reply_content($reply_id)) . "\r\n\r\n";
+		$notify_message .= sprintf( __('Permalink: %s','bbpress-antispam'), bbp_get_reply_url($reply_id))  . "\r\n";
+		$wp_email = 'bbPress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+		if ( '' == $author_name ) {
+			$from = "From: \"".wp_specialchars_decode(get_option('blogname'), ENT_QUOTES)."\" <$wp_email>";
+			if ( '' != $author_mail )
+				$reply_to = "Reply-To: $author_mail";
+		} else {
+			$from = "From: \"$author_name\" <$wp_email>";
+			if ( '' != $author_mail )
+				$reply_to = "Reply-To: $author_mail";
+		}
+		$message_headers = "$from\n". "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n";
+		if ( isset($reply_to) )
+			$message_headers .= $reply_to . "\n";
+		@wp_mail( get_bloginfo( 'admin_email' ), $subject, $notify_message, $message_headers );
+	}
+
+	public function send_mail_topic($topic_id) {
+		if ((get_option('bbpress_antispam_cfg_sendmail', 'off')=='spam' and bbp_get_topic_status($topic_id) != bbp_get_spam_status_id()))
+			return;
+		$author_mail=bbp_get_topic_author_email($topic_id);
+		$author_name=bbp_get_topic_author_display_name($topic_id);
+		if (bbp_get_reply_status($topic_id) == bbp_get_spam_status_id()) {
+			$subject = sprintf( __('[%1$s] SPAM topic: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id) );
+			$notify_message  = sprintf( __( 'New "marked as SPAM" reply on the topic "%s"','bbpress-antispam' ), bbp_get_topic_title($topic_id) ) . "\r\n";
+		} else {
+			$subject = sprintf( __('[%1$s] Topic: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id) );
+			$notify_message  = sprintf( __( 'New reply on the topic "%s"','bbpress-antispam' ),  bbp_get_topic_title($topic_id) ) . "\r\n";
+		}
+		$notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)','bbpress-antispam'), $author_name, $_SERVER['REMOTE_ADDR'], @gethostbyaddr($_SERVER['REMOTE_ADDR']) ) . "\r\n";
+		$notify_message .= sprintf( __('E-mail : %s','bbpress-antispam'), $author_mail ) . "\r\n";
+		$notify_message .= sprintf( __('URL    : %s','bbpress-antispam'), bbp_topic_author_url($topic_id) ) . "\r\n";
+		$notify_message .= sprintf( __('Whois  : http://whois.arin.net/rest/ip/%s','bbpress-antispam'), $_SERVER['REMOTE_ADDR'] ) . "\r\n";
+		$notify_message .= __('Reply: ','bbpress-antispam') . "\r\n" . strip_tags(bbp_get_topic_content($topic_id)) . "\r\n\r\n";
+		$notify_message .= sprintf( __('Permalink: %s','bbpress-antispam'), bbp_get_topic_permalink($topic_id))  . "\r\n";
+		$wp_email = 'bbPress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
+		if ( '' == $author_name ) {
+			$from = "From: \"".wp_specialchars_decode(get_option('blogname'), ENT_QUOTES)."\" <$wp_email>";
+			if ( '' != $author_mail )
+				$reply_to = "Reply-To: $author_mail";
+		} else {
+			$from = "From: \"$author_name\" <$wp_email>";
+			if ( '' != $author_mail )
+				$reply_to = "Reply-To: $author_mail";
+		}
+		$message_headers = "$from\n". "Content-Type: text/plain; charset=\"" . get_option('blog_charset') . "\"\n";
+		if ( isset($reply_to) )
+			$message_headers .= $reply_to . "\n";
+		@wp_mail( get_bloginfo( 'admin_email' ), $subject, $notify_message, $message_headers );
+	}
+
 	private function is_honey_spam() {
 		$key=get_option('bbpress_antispam_cfg_keyhoney');
 		if (!empty($key))
@@ -364,15 +436,16 @@ class bbPress_Antispam {
 	 	register_setting('bbpress','bbpress_antispam_cfg_schowdashboardchart','intval');
 		register_setting('bbpress','bbpress_antispam_cfg_prependspamtitle','intval');
 		register_setting('bbpress','bbpress_antispam_cfg_disableloggedinuser','intval');
+		register_setting('bbpress','bbpress_antispam_cfg_sendmail','strval');
 		
-		add_settings_field('bbpress_antispam_cfg_checkcsshack',__( 'Use and check with Css Hack', 'bbpress-antispam'), array($this,'option_callback_checkcsshack'),'bbpress','bbpress_antispam');
+		add_settings_field('bbpress_antispam_cfg_checkcsshack',__( 'Use and check with CSS Hack', 'bbpress-antispam'), array($this,'option_callback_checkcsshack'),'bbpress','bbpress_antispam');
 	 	register_setting('bbpress','bbpress_antispam_cfg_checkcsshack','strval');
 		
 		add_settings_field('bbpress_antispam_cfg_checkhoney',__( 'Use Hony Pot Project', 'bbpress-antispam'), array($this,'option_callback_checkhoney'),'bbpress','bbpress_antispam');
 	 	register_setting('bbpress','bbpress_antispam_cfg_checkhoney','strval');
 		register_setting('bbpress','bbpress_antispam_cfg_keyhoney','strval');
 		
-		add_settings_field('bbpress_antispam_cfg_checkfakeip',__( 'Chack for Fake IP', 'bbpress-antispam'), array($this,'option_callback_checkfakeip'),'bbpress','bbpress_antispam');
+		add_settings_field('bbpress_antispam_cfg_checkfakeip',__( 'Check for fake IP address', 'bbpress-antispam'), array($this,'option_callback_checkfakeip'),'bbpress','bbpress_antispam');
 	 	register_setting('bbpress','bbpress_antispam_cfg_checkfakeip','strval');
 		
 		add_settings_field('bbpress_antispam_cfg_checkreferer',__( 'Check Referer', 'bbpress-antispam'), array($this,'option_callback_checkreferer'),'bbpress','bbpress_antispam');
@@ -391,20 +464,28 @@ class bbPress_Antispam {
 	
 	public function callback_main_section() {
 		?>
-		<p><?php _e( 'Antispam Configuration', 'bbpress-antispam' ); ?></p>
+		<p id="bbpress-antispam"><?php _e( 'Antispam Configuration', 'bbpress-antispam' ); ?></p>
 		<?php
 	}
 	
 	public function option_callback_generel() {
 		?>
 		<input id="bbpress_antispam_cfg_generl_schowdashboardchart" name="bbpress_antispam_cfg_schowdashboardchart" type="checkbox" value="1" <?php checked( get_option( 'bbpress_antispam_cfg_schowdashboardchart', true ) ); ?> />
-		<label for="bbpress_antispam_cfg_generl_schowdashboardchart"><?php _e( 'Show chart in Dashboard', 'bbpress' ); ?></label>
+		<label for="bbpress_antispam_cfg_generl_schowdashboardchart"><?php _e( 'Show chart in Dashboard', 'bbpress-antispam' ); ?></label>
 		<br />
 		<input id="bbpress_antispam_cfg_generl_prependspamtitle" name="bbpress_antispam_cfg_prependspamtitle" type="checkbox" value="1" <?php checked( get_option( 'bbpress_antispam_cfg_prependspamtitle', true ) ); ?> />
-		<label for="bbpress_antispam_cfg_generl_prependspamtitle"><?php _e( 'Prepend titel with SAPM massage on move to spam', 'bbpress' ); ?></label>
+		<label for="bbpress_antispam_cfg_generl_prependspamtitle"><?php _e( 'Prepend title with SPAM message on move to Spam', 'bbpress-antispam' ); ?></label>
 		<br />		
 		<input id="bbpress_antispam_cfg_generl_disableloggedinuser" name="bbpress_antispam_cfg_disableloggedinuser" type="checkbox" value="1" <?php checked( get_option( 'bbpress_antispam_cfg_disableloggedinuser', false ) ); ?> />
-		<label for="bbpress_antispam_cfg_generl_disableloggedinuser"><?php _e( 'Do not scan logged in users', 'bbpress' ); ?></label>
+		<label for="bbpress_antispam_cfg_generl_disableloggedinuser"><?php _e( 'Do not scan logged in users', 'bbpress-antispam' ); ?></label>
+		<br />
+		<label for="bbpress_antispam_cfg_sendmail"><?php _e( 'Send mail if new reply/topic ?', 'bbpress-antispam' ); ?></label>
+		<select id="bbpress_antispam_cfg_sendmail" name="bbpress_antispam_cfg_sendmail">
+			<option <?php selected( get_option('bbpress_antispam_cfg_sendmail')=='ever' ); ?>><?php _e( 'Ever', 'bbpress-antispam' ); ?></option>
+			<option <?php selected( get_option('bbpress_antispam_cfg_sendmail')=='spam' ); ?>><?php _e( 'Spam only', 'bbpress-antispam' ); ?></option>
+			<option <?php selected( get_option('bbpress_antispam_cfg_sendmail','off')=='off' ); ?>><?php _e( 'Disable', 'bbpress-antispam' ); ?></option>
+		</select>
+
 		<br />
 		<?php
 	}
@@ -450,10 +531,10 @@ class bbPress_Antispam {
 
 	public function option_callback_checkreferer() {
 		?>
-		<input id="bbpress_antispam_cfg_checkreferer_block" name="bbpress_antispam_cfg_checkreferer" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkreferer','block')=='block' ); ?> />
+		<input id="bbpress_antispam_cfg_checkreferer_block" name="bbpress_antispam_cfg_checkreferer" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkreferer')=='block' ); ?> />
 		<label for="bbpress_antispam_cfg_checkreferer_block"><?php _e( 'Block', 'bbpress-antispam' ); ?></label>
 		<br />
-		<input id="bbpress_antispam_cfg_checkreferer_spam" name="bbpress_antispam_cfg_checkreferer" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkreferer')=='spam' ); ?> />
+		<input id="bbpress_antispam_cfg_checkreferer_spam" name="bbpress_antispam_cfg_checkreferer" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkreferer','spam')=='spam' ); ?> />
 		<label for="bbpress_antispam_cfg_checkreferer_spam"><?php _e( 'Move to Spam', 'bbpress-antispam' ); ?></label>
 		<br />
 		<input id="bbpress_antispam_cfg_checkreferer_off" name="bbpress_antispam_cfg_checkreferer" type="radio" value="off" <?php checked( get_option('bbpress_antispam_cfg_checkreferer')=='off' ); ?> />
@@ -476,10 +557,10 @@ class bbPress_Antispam {
 	
 	public function option_callback_checkcontentspam() {
 		?>
-		<input id="bbpress_antispam_cfg_checkcontentspam_block" name="bbpress_antispam_cfg_checkcontentspam" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkcontentspam')=='block' ); ?> />
+		<input id="bbpress_antispam_cfg_checkcontentspam_block" name="bbpress_antispam_cfg_checkcontentspam" type="radio" value="block" <?php checked( get_option('bbpress_antispam_cfg_checkcontentspam','block')=='block' ); ?> />
 		<label for="bbpress_antispam_cfg_checkcontentspam_block"><?php _e( 'Block', 'bbpress-antispam' ); ?></label>
 		<br />
-		<input id="bbpress_antispam_cfg_checkcontentspam_spam" name="bbpress_antispam_cfg_checkcontentspam" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkcontentspam','spam')=='spam' ); ?> />
+		<input id="bbpress_antispam_cfg_checkcontentspam_spam" name="bbpress_antispam_cfg_checkcontentspam" type="radio" value="spam" <?php checked( get_option('bbpress_antispam_cfg_checkcontentspam')=='spam' ); ?> />
 		<label for="bbpress_antispam_cfg_checkcontentspam_spam"><?php _e( 'Move to Spam', 'bbpress-antispam' ); ?></label>
 		<br />
 		<input id="bbpress_antispam_cfg_checkcontentspam_off" name="bbpress_antispam_cfg_checkcontentspam" type="radio" value="off" <?php checked( get_option('bbpress_antispam_cfg_checkcontentspam')=='off' ); ?> />
