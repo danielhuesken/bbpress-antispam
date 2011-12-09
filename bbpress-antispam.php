@@ -75,7 +75,7 @@ class bbPress_Antispam {
 		add_filter('bbp_new_reply_pre_insert',array($this,'post_pre_insert'),1);
 		if (get_option( 'bbpress_antispam_cfg_sendmail', 'off' )!='off') {
 			add_action('bbp_new_topic',array($this,'send_mail_topic'),100,1);
-			add_action('bbp_new_reply',array($this,'send_mail_reply'),100,1);
+			add_action('bbp_new_reply',array($this,'send_mail_reply'),100,2);
 		}
 		add_action('bbp_dashboard_widget_right_now_content_table_end',array($this,'add_blocked_on_table_end'));
 		if (get_option( 'bbpress_antispam_cfg_schowdashboardchart', true ))
@@ -209,17 +209,17 @@ class bbPress_Antispam {
 		update_option('bbpress_antispam_spamcount',$this->spamcount);
 	}
 
-	public function send_mail_reply($reply_id) {
+	public function send_mail_reply($reply_id, $topic_id) {
 		if ((get_option('bbpress_antispam_cfg_sendmail', 'off')=='spam' and bbp_get_reply_status($reply_id) != bbp_get_spam_status_id()))
 			return;
 		$author_mail=bbp_get_reply_author_email($reply_id);
 		$author_name=bbp_get_reply_author_display_name($reply_id);
 		if (bbp_get_reply_status($reply_id) == bbp_get_spam_status_id()) {
-			$subject = sprintf( __('[%1$s] SPAM reply on: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($reply_id) );
-			$notify_message  = sprintf( __( 'New "marked as SPAM" reply on the topic "%s"','bbpress-antispam' ), bbp_get_reply_title($reply_id) ) . "\r\n";
+			$subject = sprintf( __('[%1$s] SPAM reply to: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES),  bbp_get_topic_title($topic_id) );
+			$notify_message  = sprintf( __( 'New "marked as SPAM" reply to "%s"','bbpress-antispam' ),  bbp_get_topic_title($topic_id) ) . "\r\n";
 		} else {
-			$subject = sprintf( __('[%1$s] Reply on: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($reply_id) );
-			$notify_message  = sprintf( __( 'New reply on the topic "%s"','bbpress-antispam' ),  bbp_get_topic_title($reply_id) ) . "\r\n";
+			$subject = sprintf( __('[%1$s] Reply to: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES),  bbp_get_topic_title($topic_id) );
+			$notify_message  = sprintf( __( 'New reply to "%s"','bbpress-antispam' ),   bbp_get_topic_title($topic_id) ) . "\r\n";
 		}
 		$notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)','bbpress-antispam'), $author_name, $_SERVER['REMOTE_ADDR'], @gethostbyaddr($_SERVER['REMOTE_ADDR']) ) . "\r\n";
 		$notify_message .= sprintf( __('E-mail : %s','bbpress-antispam'), $author_mail ) . "\r\n";
@@ -250,10 +250,10 @@ class bbPress_Antispam {
 		$author_name=bbp_get_topic_author_display_name($topic_id);
 		if (bbp_get_reply_status($topic_id) == bbp_get_spam_status_id()) {
 			$subject = sprintf( __('[%1$s] SPAM topic: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id) );
-			$notify_message  = sprintf( __( 'New "marked as SPAM" reply on the topic "%s"','bbpress-antispam' ), bbp_get_topic_title($topic_id) ) . "\r\n";
+			$notify_message  = sprintf( __( 'New "marked as SPAM" topic "%s"','bbpress-antispam' ), bbp_get_topic_title($topic_id) ) . "\r\n";
 		} else {
 			$subject = sprintf( __('[%1$s] Topic: "%2$s"','bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id) );
-			$notify_message  = sprintf( __( 'New reply on the topic "%s"','bbpress-antispam' ),  bbp_get_topic_title($topic_id) ) . "\r\n";
+			$notify_message  = sprintf( __( 'New topic "%s"','bbpress-antispam' ),  bbp_get_topic_title($topic_id) ) . "\r\n";
 		}
 		$notify_message .= sprintf( __('Author : %1$s (IP: %2$s , %3$s)','bbpress-antispam'), $author_name, $_SERVER['REMOTE_ADDR'], @gethostbyaddr($_SERVER['REMOTE_ADDR']) ) . "\r\n";
 		$notify_message .= sprintf( __('E-mail : %s','bbpress-antispam'), $author_mail ) . "\r\n";
