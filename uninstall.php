@@ -1,5 +1,5 @@
 <?PHP
-if (!defined('ABSPATH') && !defined('WP_UNINSTALL_PLUGIN'))
+if ( !defined('ABSPATH') && !defined('WP_UNINSTALL_PLUGIN') )
 	die();
 delete_option('bbpress_antispam_spamcount');
 delete_option('bbpress_antispam_spamcart');
