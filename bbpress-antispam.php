@@ -89,14 +89,13 @@ class bbPress_Antispam {
 			return;
 		?>
 	<style type="text/css" media="screen">
-			/*<![CDATA[*/
-		#bbp_topic_content_css, #bbp_reply_content_css {
-			display: none;
-			width: 1px;
-			height: 1px;
-		}
-
-			/*]]>*/
+	/*<![CDATA[*/
+	#bbp_topic_content_css, #bbp_reply_content_css {
+		display: none;
+		width: 1px;
+		height: 1px;
+	}
+	/*]]>*/
 	</style>
 	<?PHP
 		ob_start(array( $this, 'ob_callback_template_redirect' ));
@@ -219,6 +218,8 @@ class bbPress_Antispam {
 			return;
 		$author_mail = bbp_get_reply_author_email($reply_id);
 		$author_name = bbp_get_reply_author_display_name($reply_id);
+		if ($author_mail==get_bloginfo('admin_email'))
+			return;
 		if ( bbp_get_reply_status($reply_id) == bbp_get_spam_status_id() ) {
 			$subject = sprintf(__('[%1$s] SPAM reply to: "%2$s"', 'bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id));
 			$notify_message = sprintf(__('New "marked as SPAM" reply to "%s"', 'bbpress-antispam'), bbp_get_topic_title($topic_id)) . "\r\n";
@@ -230,7 +231,7 @@ class bbPress_Antispam {
 		$notify_message .= sprintf(__('E-mail : %s', 'bbpress-antispam'), $author_mail) . "\r\n";
 		$notify_message .= sprintf(__('URL    : %s', 'bbpress-antispam'), bbp_reply_author_url($reply_id)) . "\r\n";
 		$notify_message .= sprintf(__('Whois  : http://whois.arin.net/rest/ip/%s', 'bbpress-antispam'), $_SERVER['REMOTE_ADDR']) . "\r\n";
-		$notify_message .= __('Reply: ', 'bbpress-antispam') . "\r\n" . strip_tags(bbp_get_reply_content($reply_id)) . "\r\n\r\n";
+		$notify_message .= __('Reply text: ', 'bbpress-antispam') . "\r\n" . htmlspecialchars_decode(strip_tags(bbp_get_reply_content($reply_id))) . "\r\n\r\n";
 		$notify_message .= sprintf(__('Permalink: %s', 'bbpress-antispam'), bbp_get_reply_url($reply_id)) . "\r\n";
 		$wp_email = 'bbPress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 		if ( '' == $author_name ) {
@@ -253,6 +254,8 @@ class bbPress_Antispam {
 			return;
 		$author_mail = bbp_get_topic_author_email($topic_id);
 		$author_name = bbp_get_topic_author_display_name($topic_id);
+		if ($author_mail==get_bloginfo('admin_email'))
+			return;
 		if ( bbp_get_reply_status($topic_id) == bbp_get_spam_status_id() ) {
 			$subject = sprintf(__('[%1$s] SPAM topic: "%2$s"', 'bbpress-antispam'), wp_specialchars_decode(get_option('blogname'), ENT_QUOTES), bbp_get_topic_title($topic_id));
 			$notify_message = sprintf(__('New "marked as SPAM" topic "%s"', 'bbpress-antispam'), bbp_get_topic_title($topic_id)) . "\r\n";
@@ -264,7 +267,7 @@ class bbPress_Antispam {
 		$notify_message .= sprintf(__('E-mail : %s', 'bbpress-antispam'), $author_mail) . "\r\n";
 		$notify_message .= sprintf(__('URL    : %s', 'bbpress-antispam'), bbp_topic_author_url($topic_id)) . "\r\n";
 		$notify_message .= sprintf(__('Whois  : http://whois.arin.net/rest/ip/%s', 'bbpress-antispam'), $_SERVER['REMOTE_ADDR']) . "\r\n";
-		$notify_message .= __('Reply: ', 'bbpress-antispam') . "\r\n" . strip_tags(bbp_get_topic_content($topic_id)) . "\r\n\r\n";
+		$notify_message .= __('Topic text: ', 'bbpress-antispam') . "\r\n" . htmlspecialchars_decode(strip_tags(bbp_get_topic_content($topic_id)))) . "\r\n\r\n";
 		$notify_message .= sprintf(__('Permalink: %s', 'bbpress-antispam'), bbp_get_topic_permalink($topic_id)) . "\r\n";
 		$wp_email = 'bbPress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 		if ( '' == $author_name ) {
