@@ -267,7 +267,7 @@ class bbPress_Antispam {
 		$notify_message .= sprintf(__('E-mail : %s', 'bbpress-antispam'), $author_mail) . "\r\n";
 		$notify_message .= sprintf(__('URL    : %s', 'bbpress-antispam'), bbp_topic_author_url($topic_id)) . "\r\n";
 		$notify_message .= sprintf(__('Whois  : http://whois.arin.net/rest/ip/%s', 'bbpress-antispam'), $_SERVER['REMOTE_ADDR']) . "\r\n";
-		$notify_message .= __('Topic text: ', 'bbpress-antispam') . "\r\n" . htmlspecialchars_decode(strip_tags(bbp_get_topic_content($topic_id)))) . "\r\n\r\n";
+		$notify_message .= __('Topic text: ', 'bbpress-antispam') . "\r\n" . htmlspecialchars_decode(strip_tags(bbp_get_topic_content($topic_id))) . "\r\n\r\n";
 		$notify_message .= sprintf(__('Permalink: %s', 'bbpress-antispam'), bbp_get_topic_permalink($topic_id)) . "\r\n";
 		$wp_email = 'bbPress@' . preg_replace('#^www\.#', '', strtolower($_SERVER['SERVER_NAME']));
 		if ( '' == $author_name ) {
