@@ -3,7 +3,7 @@ Contributors: danielhuesken
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DYTLEJTRVDWAU
 Tags: bbpress, bbpress 2.0, spam, antispam
 Requires at least: 3.2.1
-Tested up to: 3.2.1
+Tested up to: 3.3
 Stable tag: 0.5
 
 Antispam for bbPress 2.0
