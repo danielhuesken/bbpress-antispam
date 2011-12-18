@@ -13,354 +13,371 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Textdomain-Support: yes\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: \n"
+"X-Poedit-Bookmarks: \n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
 
+#: bbpress-antispam.php:115
 #@ bbpress-antispam
-#: bbpress-antispam.php:111
 msgid "<strong>bbPress ANTISPAM</strong>: CSS Hack!"
 msgstr "<strong>bbPress ANTISPAM</strong>: CSS-Hack!"
 
+#: bbpress-antispam.php:132
 #@ bbpress-antispam
-#: bbpress-antispam.php:128
 msgid "<strong>bbPress ANTISPAM</strong>: Honey Pot!"
 msgstr "<strong>bbPress ANTISPAM</strong>: Honey-Pot!"
 
+#: bbpress-antispam.php:137
 #@ bbpress-antispam
-#: bbpress-antispam.php:133
 msgid "<strong>bbPress ANTISPAM</strong>: Fake IP!"
 msgstr "<strong>bbPress ANTISPAM</strong>: Fake-IP!"
 
+#: bbpress-antispam.php:147
 #@ bbpress-antispam
-#: bbpress-antispam.php:143
 msgid "<strong>bbPress ANTISPAM</strong>: Spam IP!"
 msgstr "<strong>bbPress ANTISPAM</strong>: Spam-IP!"
 
+#: bbpress-antispam.php:152
 #@ bbpress-antispam
-#: bbpress-antispam.php:148
 msgid "<strong>bbPress ANTISPAM</strong>: Spam content!"
 msgstr "<strong>bbPress ANTISPAM</strong>: Spam-Inhalt!"
 
+#: bbpress-antispam.php:164
 #@ bbpress-antispam
-#: bbpress-antispam.php:160
 msgid "bbPress ANTISPAM: Honey Pot:"
 msgstr "bbPress ANTISPAM: HoneyPot:"
 
+#: bbpress-antispam.php:171
 #@ bbpress-antispam
-#: bbpress-antispam.php:167
 msgid "bbPress ANTISPAM: Fake IP:"
 msgstr "bbPress ANTISPAM: Fake-IP:"
 
+#: bbpress-antispam.php:185
 #@ bbpress-antispam
-#: bbpress-antispam.php:181
 msgid "bbPress ANTISPAM: Spam IP:"
 msgstr "bbPress ANTISPAM: Spam-IP:"
 
+#: bbpress-antispam.php:192
 #@ bbpress-antispam
-#: bbpress-antispam.php:188
 msgid "bbPress ANTISPAM: Spam content:"
 msgstr "bbPress ANTISPAM: Spam-Inhalt:"
 
+#: bbpress-antispam.php:199
 #@ bbpress-antispam
-#: bbpress-antispam.php:195
 msgid "bbPress ANTISPAM: Spam author:"
 msgstr "bbPress ANTISPAM: Spam-Autor:"
 
+#: bbpress-antispam.php:372
 #@ bbpress-antispam
-#: bbpress-antispam.php:359
 msgid "Blocked"
 msgstr "Blockiert"
 
+#: bbpress-antispam.php:398
 #@ bbpress-antispam
-#: bbpress-antispam.php:383
 msgid "Date"
 msgstr "Datum"
 
+#: bbpress-antispam.php:399
 #@ bbpress-antispam
-#: bbpress-antispam.php:384
 msgid "Summary"
 msgstr "Zusammenfassung"
 
+#: bbpress-antispam.php:400
 #@ bbpress-antispam
-#: bbpress-antispam.php:385
 msgid "CSS Hack"
 msgstr "CSS-Hack"
 
+#: bbpress-antispam.php:401
 #@ bbpress-antispam
-#: bbpress-antispam.php:386
 msgid "Honey Pot"
 msgstr "Honigtopg (Honeypot-Dienst)"
 
+#: bbpress-antispam.php:402
 #@ bbpress-antispam
-#: bbpress-antispam.php:387
 msgid "Fake IP"
 msgstr "Fake-IP-Adresse"
 
+#: bbpress-antispam.php:404
 #@ bbpress-antispam
-#: bbpress-antispam.php:389
 msgid "Spam IP"
 msgstr "Spam-IP"
 
+#: bbpress-antispam.php:405
 #@ bbpress-antispam
-#: bbpress-antispam.php:390
 msgid "Spam content"
 msgstr "Spam-Inhalt"
 
+#: bbpress-antispam.php:406
 #@ bbpress-antispam
-#: bbpress-antispam.php:391
 msgid "Spam author"
 msgstr "Spam-Autor"
 
+#: bbpress-antispam.php:441
 #@ backwpup
-#: bbpress-antispam.php:426
 msgid "Donate"
 msgstr "Spenden"
 
+#: bbpress-antispam.php:448
 #@ bbpress-antispam
-#: bbpress-antispam.php:433
 msgid "Antispam"
 msgstr "Antispam"
 
+#: bbpress-antispam.php:450
 #@ bbpress-antispam
-#: bbpress-antispam.php:435
 msgid "Generel Settings"
 msgstr "Allgemeine Einstellungen"
 
+#: bbpress-antispam.php:460
 #@ bbpress-antispam
-#: bbpress-antispam.php:444
 msgid "Use Hony Pot Project"
 msgstr "HonyPot-Dienst verwenden"
 
+#: bbpress-antispam.php:470
 #@ bbpress-antispam
-#: bbpress-antispam.php:454
 msgid "Is IP already marked as Spam IP"
 msgstr "Ist die IP schon in Spams"
 
+#: bbpress-antispam.php:473
 #@ bbpress-antispam
-#: bbpress-antispam.php:457
 msgid "Is content already marked as Spam"
 msgstr "Ist dieser Inhalt bereits als Spam gekennzeichnet"
 
+#: bbpress-antispam.php:476
 #@ bbpress-antispam
-#: bbpress-antispam.php:460
 msgid "Is Author already marked as Spam Author"
 msgstr "Ist der Autor bereits als Spam-Autor gekennzeichnet"
 
+#: bbpress-antispam.php:483
 #@ bbpress-antispam
-#: bbpress-antispam.php:467
 msgid "Antispam Configuration"
 msgstr "Antispam-Einstellungen"
 
+#: bbpress-antispam.php:492
 #@ bbpress-antispam
-#: bbpress-antispam.php:474
 msgid "Show chart in Dashboard"
 msgstr "Chart im Dashboard anzeigen"
 
+#: bbpress-antispam.php:502
 #@ bbpress-antispam
-#: bbpress-antispam.php:480
 msgid "Do not scan logged in users"
 msgstr "Angemeldete Benutzer nicht scannen"
 
+#: bbpress-antispam.php:521
+#: bbpress-antispam.php:538
+#: bbpress-antispam.php:554
+#: bbpress-antispam.php:570
+#: bbpress-antispam.php:586
+#: bbpress-antispam.php:602
 #@ bbpress-antispam
-#: bbpress-antispam.php:496
-#: bbpress-antispam.php:509
-#: bbpress-antispam.php:522
-#: bbpress-antispam.php:535
-#: bbpress-antispam.php:548
-#: bbpress-antispam.php:561
 msgid "Block"
 msgstr "Blockieren"
 
+#: bbpress-antispam.php:510
+#: bbpress-antispam.php:525
+#: bbpress-antispam.php:546
+#: bbpress-antispam.php:562
+#: bbpress-antispam.php:578
+#: bbpress-antispam.php:594
+#: bbpress-antispam.php:610
+#: bbpress-antispam.php:622
 #@ bbpress-antispam
-#: bbpress-antispam.php:486
-#: bbpress-antispam.php:499
-#: bbpress-antispam.php:515
-#: bbpress-antispam.php:528
-#: bbpress-antispam.php:541
-#: bbpress-antispam.php:554
-#: bbpress-antispam.php:567
-#: bbpress-antispam.php:577
 msgid "Disable"
 msgstr "Deaktivieren"
 
+#: bbpress-antispam.php:534
 #@ bbpress-antispam
-#: bbpress-antispam.php:506
 msgid "Hony Pot Key"
 msgstr "HoneyPot-Schlüssel (Key)"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:512
-#: bbpress-antispam.php:525
-#: bbpress-antispam.php:538
-#: bbpress-antispam.php:551
-#: bbpress-antispam.php:564
+#: bbpress-antispam.php:542
+#: bbpress-antispam.php:558
 #: bbpress-antispam.php:574
+#: bbpress-antispam.php:590
+#: bbpress-antispam.php:606
+#: bbpress-antispam.php:618
+#@ bbpress-antispam
 msgid "Move to Spam"
 msgstr "In Spam verschieben"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'Name'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "bbPress Antispam"
 msgstr "bbPress Antispam"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'PluginURI'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "http:/danielhuesken.de/portfolio/bbpress-antispam"
 msgstr "http:/danielhuesken.de/portfolio/bbpress-antispam"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'Description'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "Antispam for bbPress 2.0"
 msgstr "Antispam für bbPress 2.0"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'Author'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "Daniel H&uuml;sken"
 msgstr "Daniel H&uuml;sken"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'AuthorURI'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "http://danielhuesken.de"
 msgstr "http://danielhuesken.de/"
 
-#@ bbpress-antispam
 #. translators: plugin header field 'Version'
 #: bbpress-antispam.php:0
+#@ bbpress-antispam
 msgid "0.6"
 msgstr "0.6"
 
+#: bbpress-antispam.php:142
 #@ bbpress-antispam
-#: bbpress-antispam.php:138
 msgid "<strong>bbPress ANTISPAM</strong>: Referrer!"
 msgstr "<strong>bbPress ANTISPAM</strong>: Referrer!"
 
+#: bbpress-antispam.php:178
 #@ bbpress-antispam
-#: bbpress-antispam.php:174
 msgid "bbPress ANTISPAM: Referrer:"
 msgstr "bbPress ANTISPAM: Referrer:"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:218
+#: bbpress-antispam.php:230
+#: bbpress-antispam.php:266
 #, php-format
-msgid "[%1$s] SPAM reply on: \"%2$s\""
-msgstr "[%1$s] SPAM Antwort am: \"%2$s\""
-
 #@ bbpress-antispam
-#: bbpress-antispam.php:219
-#: bbpress-antispam.php:253
-#, php-format
-msgid "New \"marked as SPAM\" reply on the topic \"%s\""
-msgstr "Neue, \"als SPAM gekennzeichnete\" Antwort zum Thema \"%s\""
-
-#@ bbpress-antispam
-#: bbpress-antispam.php:221
-#, php-format
-msgid "[%1$s] Reply on: \"%2$s\""
-msgstr "[%1$s] Antwort auf: \"%2$s\""
-
-#@ bbpress-antispam
-#: bbpress-antispam.php:222
-#: bbpress-antispam.php:256
-#, php-format
-msgid "New reply on the topic \"%s\""
-msgstr "Neue Antwort auf das Thema \"%s\""
-
-#@ bbpress-antispam
-#: bbpress-antispam.php:224
-#: bbpress-antispam.php:258
-#, php-format
 msgid "Author : %1$s (IP: %2$s , %3$s)"
 msgstr "Autor: %1$s (IP: %2$s , %3$s)"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:225
-#: bbpress-antispam.php:259
+#: bbpress-antispam.php:231
+#: bbpress-antispam.php:267
 #, php-format
+#@ bbpress-antispam
 msgid "E-mail : %s"
 msgstr "E-Mail: %s"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:226
-#: bbpress-antispam.php:260
+#: bbpress-antispam.php:232
+#: bbpress-antispam.php:268
 #, php-format
+#@ bbpress-antispam
 msgid "URL    : %s"
 msgstr "URL: %s"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:227
-#: bbpress-antispam.php:261
+#: bbpress-antispam.php:233
+#: bbpress-antispam.php:269
 #, php-format
+#@ bbpress-antispam
 msgid "Whois  : http://whois.arin.net/rest/ip/%s"
 msgstr "IP-Abfrage (Whois): http://whois.arin.net/rest/ip/%s"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:228
-#: bbpress-antispam.php:262
-msgid "Reply: "
-msgstr "Antwort: "
-
-#@ bbpress-antispam
-#: bbpress-antispam.php:229
-#: bbpress-antispam.php:263
+#: bbpress-antispam.php:235
+#: bbpress-antispam.php:271
 #, php-format
+#@ bbpress-antispam
 msgid "Permalink: %s"
 msgstr "Permalink: %s"
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:252
+#: bbpress-antispam.php:260
 #, php-format
+#@ bbpress-antispam
 msgid "[%1$s] SPAM topic: \"%2$s\""
 msgstr "[%1$s] SPAM-Thema: \"%2$s\""
 
-#@ bbpress-antispam
-#: bbpress-antispam.php:255
+#: bbpress-antispam.php:263
 #, php-format
+#@ bbpress-antispam
 msgid "[%1$s] Topic: \"%2$s\""
 msgstr "[%1$s] Thema: \"%2$s\""
 
+#: bbpress-antispam.php:403
 #@ bbpress-antispam
-#: bbpress-antispam.php:388
 msgid "Referrer"
 msgstr "Referrer"
 
+#: bbpress-antispam.php:457
 #@ bbpress-antispam
-#: bbpress-antispam.php:441
 msgid "Use and check with CSS Hack"
 msgstr "Verwenden und via CSS-Hack prüfen"
 
+#: bbpress-antispam.php:464
 #@ bbpress-antispam
-#: bbpress-antispam.php:448
 msgid "Check for fake IP address"
 msgstr "Auf Fake-IP-Adressen prüfen"
 
+#: bbpress-antispam.php:467
 #@ bbpress-antispam
-#: bbpress-antispam.php:451
 msgid "Check Referrer"
 msgstr "Referrer prüfen"
 
+#: bbpress-antispam.php:497
 #@ bbpress-antispam
-#: bbpress-antispam.php:477
 msgid "Prepend title with SPAM message on move to Spam"
 msgstr "Beim Verschieben in 'Spam' eine SPAM-Markierung zum Titel hinzufügen"
 
+#: bbpress-antispam.php:508
 #@ bbpress-antispam
-#: bbpress-antispam.php:482
-msgid "Send mail if new reply/topic ?"
-msgstr "E-Mail senden, wenn es ein neues Thema/ eine neu Antwort gibt?"
-
-#@ bbpress-antispam
-#: bbpress-antispam.php:484
 msgid "Ever"
 msgstr "Immer"
 
+#: bbpress-antispam.php:509
 #@ bbpress-antispam
-#: bbpress-antispam.php:485
 msgid "Spam only"
 msgstr "Nur bei Spam"
+
+#: bbpress-antispam.php:224
+#, php-format
+#@ bbpress-antispam
+msgid "[%1$s] SPAM reply to: \"%2$s\""
+msgstr "[%1$s] SPAM-Antwort auf: \"%2$s\""
+
+#: bbpress-antispam.php:225
+#, php-format
+#@ bbpress-antispam
+msgid "New \"marked as SPAM\" reply to \"%s\""
+msgstr "Neue \"als SPAM markierte\" Antwort auf \"%s\""
+
+#: bbpress-antispam.php:227
+#, php-format
+#@ bbpress-antispam
+msgid "[%1$s] Reply to: \"%2$s\""
+msgstr "[%1$s] Antwort auf: \"%2$s\""
+
+#: bbpress-antispam.php:228
+#, php-format
+#@ bbpress-antispam
+msgid "New reply to \"%s\""
+msgstr "Neue Antwort auf \"%s\""
+
+#: bbpress-antispam.php:234
+#@ bbpress-antispam
+msgid "Reply text: "
+msgstr "Antwort text:"
+
+#: bbpress-antispam.php:261
+#, php-format
+#@ bbpress-antispam
+msgid "New \"marked as SPAM\" topic \"%s\""
+msgstr "Neues \"als SPAM markiertes\" Thema \"%s\""
+
+#: bbpress-antispam.php:264
+#, php-format
+#@ bbpress-antispam
+msgid "New topic \"%s\""
+msgstr "Neues Thema \"%s\""
+
+#: bbpress-antispam.php:270
+#@ bbpress-antispam
+msgid "Topic text: "
+msgstr "Thema Text:"
+
+#: bbpress-antispam.php:505
+#, php-format
+#@ bbpress-antispam
+msgid "Send mail to %s if new reply/topic ?"
+msgstr "Sende eine E-Mail an %s wenn eine neue Antwort/neues Thema ?"
 
