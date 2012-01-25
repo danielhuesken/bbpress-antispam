@@ -4,7 +4,7 @@ Plugin Name: bbPress Antispam
 Plugin URI: http://danielhuesken.de/portfolio/bbpress-antispam
 Description: Antispam for bbPress 2.0
 Author: Daniel H&uuml;sken
-Version: 0.6
+Version: 0.7
 Author URI: http://danielhuesken.de
 Text Domain: bbpress-antispam
 Domain Path: /lang/
