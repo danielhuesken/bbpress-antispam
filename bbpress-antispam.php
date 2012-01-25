@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: bbPress Antispam
-Plugin URI: http:/danielhuesken.de/portfolio/bbpress-antispam
+Plugin URI: http://danielhuesken.de/portfolio/bbpress-antispam
 Description: Antispam for bbPress 2.0
 Author: Daniel H&uuml;sken
 Version: 0.6
@@ -69,6 +69,7 @@ class bbPress_Antispam {
 		//add filter and actions
 		if ( get_option('bbpress_antispam_cfg_checkcsshack', 'block') != 'off' )
 			add_action('bbp_head', array( $this, 'ob_start_bbp_head' ), 100);
+		add_action('admin_head-settings_page_bbpress', array( $this, 'add_help_tab' ));
 		add_filter('bbp_new_topic_pre_content', array( $this, 'post_pre_content' ), 1);
 		add_filter('bbp_new_reply_pre_content', array( $this, 'post_pre_content' ), 1);
 		add_filter('bbp_new_topic_pre_insert', array( $this, 'post_pre_insert' ), 1);
@@ -90,11 +91,11 @@ class bbPress_Antispam {
 		?>
 	<style type="text/css" media="screen">
 			/*<![CDATA[*/
-		#bbp_topic_content_css, #bbp_reply_content_css {
-			display: none;
-			width: 1px;
-			height: 1px;
-		}
+				#bbp_topic_content_css, #bbp_reply_content_css {
+					display: none;
+					width: 1px;
+					height: 1px;
+				}
 			/*]]>*/
 	</style>
 	<?PHP
@@ -438,11 +439,30 @@ class bbPress_Antispam {
 		if ( !current_user_can('install_plugins') )
 			return $links;
 		if ( $file == $this->plugin_base_name . '/bbpress-antispam.php' ) {
-			$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DYTLEJTRVDWAU" target="_blank">' . __('Donate', 'backwpup') . '</a>';
+			$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DYTLEJTRVDWAU" target="_blank">' . __('Donate', 'bbpress-antispam') . '</a>';
 		}
 		return $links;
 	}
 
+	public function add_help_tab() {
+		if (method_exists(get_current_screen(),'add_help_tab')) {
+			get_current_screen()->add_help_tab( array(
+				'id'      => 'antispam',
+				'title'   => __('Antispam','bbpress-antispam'),
+				'content' =>
+				'<p><a href="http://danielhuesken.de/portfolio/bbpress-antispam" target="_blank">bbPress Antispam</a>, <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL2</a> &copy 2011-'.date('Y').' <a href="http://danielhuesken.de" target="_blank">Daniel H&uuml;sken</a></p><p>'.__('bbPress Antispam comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.','bbpress-antispam').'</p>'.
+					'<p><strong>' . __( 'For more information:','bbpress-antispam' ) . '</strong></p><p>' .
+					' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/" target="_blank">Wordpress Plugin Site</a>','bbpress-antispam' ) . ' |' .
+					' ' . __( '<a href="http://danielhuesken.de/portfolio/bbpress-antispam/" target="_blank">Plugin Site</a>','bbpress-antispam' ) . ' |' .
+					' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/faq/" target="_blank">FAQ</a>','backwpup' ) . ' |' .
+					' ' . __( '<a href="http://wordpress.org/tags/bbpress-antispam/" target="_blank">Support Forums</a>','bbpress-antispam' ) . ' |' .
+					' ' . __( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DYTLEJTRVDWAU" target="_blank">Donate</a>','bbpress-antispam' ) . ' |' .
+					' ' . __( '<a href="https://plus.google.com/109825920160870159805/" target="_blank">Google+</a>','bbpress-antispam' ) . ' ' .
+					'</p>'
+			) );
+		}	
+	}
+	
 	public function register_admin_settings() {
 
 		add_settings_section('bbpress_antispam', __('Antispam', 'bbpress-antispam'), array( $this, 'callback_main_section' ), 'bbpress');
