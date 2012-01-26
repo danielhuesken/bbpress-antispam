@@ -8,24 +8,25 @@ Version: 0.7
 Author URI: http://danielhuesken.de
 Text Domain: bbpress-antispam
 Domain Path: /lang/
+License: GPLv3
 */
 
 /*
-	Copyright (C) 2011  Daniel Hüsken  (email: mail@danielhuesken.de)
+	Copyright 2011-2012  Daniel Hüsken  (email: mail@danielhuesken.de)
 
-	This program is free software; you can redistribute it and/or
-	modify it under the terms of the GNU General Public License
-	as published by the Free Software Foundation; either version 2
-	of the License, or (at your option) any later version.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 
 // Exit if accessed directly
@@ -450,7 +451,7 @@ class bbPress_Antispam {
 				'id'      => 'antispam',
 				'title'   => __('Antispam','bbpress-antispam'),
 				'content' =>
-				'<p><a href="http://danielhuesken.de/portfolio/bbpress-antispam" target="_blank">bbPress Antispam</a>, <a href="http://www.gnu.org/licenses/gpl-2.0.html" target="_blank">GPL2</a> &copy 2011-'.date('Y').' <a href="http://danielhuesken.de" target="_blank">Daniel H&uuml;sken</a></p><p>'.__('bbPress Antispam comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.','bbpress-antispam').'</p>'.
+				'<p><a href="http://danielhuesken.de/portfolio/bbpress-antispam" target="_blank">bbPress Antispam</a>, <a href="http://www.gnu.org/licenses/gpl-4.0" target="_blank">GPLv3</a> &copy 2011-'.date('Y').' <a href="http://danielhuesken.de" target="_blank">Daniel H&uuml;sken</a></p><p>'.__('bbPress Antispam comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.','bbpress-antispam').'</p>'.
 					'<p><strong>' . __( 'For more information:','bbpress-antispam' ) . '</strong></p><p>' .
 					' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/" target="_blank">Wordpress Plugin Site</a>','bbpress-antispam' ) . ' |' .
 					' ' . __( '<a href="http://danielhuesken.de/portfolio/bbpress-antispam/" target="_blank">Plugin Site</a>','bbpress-antispam' ) . ' |' .
