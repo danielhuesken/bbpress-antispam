@@ -29,6 +29,7 @@ It is free from Payment and don't send anything to a server.
 == Changelog ==
 = 0.7 =
 * added help tab
+* change char conversion on sending mail
 
 = 0.6 =
 * Added: Send mail on new topic/reply
