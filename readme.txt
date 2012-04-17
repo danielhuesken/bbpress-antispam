@@ -28,8 +28,10 @@ It is free from Payment and don't send anything to a server.
 
 == Changelog ==
 = 0.7 =
-* added help tab
-* change char conversion on sending mail
+* Added: help tab
+* Fixed: charakter on sending mail
+* Fixed: no CSS spam filter on edit topic/reply
+* Changed: Prependeing spam type on content not on title
 
 = 0.6 =
 * Added: Send mail on new topic/reply
