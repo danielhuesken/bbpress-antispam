@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: bbpress, anti-spam, antispam, spam, forum
 Requires at least: 3.2.1
 Tested up to: 3.3
-Stable tag: 0.6
+Stable tag: 0.7
 
 Antispam for bbPress 2.0
 
