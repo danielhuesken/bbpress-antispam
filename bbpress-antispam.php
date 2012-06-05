@@ -546,7 +546,7 @@ class bbPress_Antispam {
 	<br/>
 	<label
 		for="bbpress_antispam_cfg_sendmail"><?php echo sprintf(__('Send mail to %s if new reply/topic ?', 'bbpress-antispam'),
-		'<input class="text" name="bbpress_antispam_cfg_sendmailto" type="text" value="' . get_option('bbpress_antispam_cfg_sendmailto', get_bloginfo('admin_email') . '" />')); ?></label>
+		'<input class="text" name="bbpress_antispam_cfg_sendmailto" type="text" value="' . get_option('bbpress_antispam_cfg_sendmailto', get_bloginfo('admin_email')) . '" />'); ?></label>
 	<select id="bbpress_antispam_cfg_sendmail" name="bbpress_antispam_cfg_sendmail">
 		<option <?php selected(get_option('bbpress_antispam_cfg_sendmail') == 'ever'); ?>><?php _e('Ever', 'bbpress-antispam'); ?></option>
 		<option <?php selected(get_option('bbpress_antispam_cfg_sendmail') == 'spam'); ?>><?php _e('Spam only', 'bbpress-antispam'); ?></option>
