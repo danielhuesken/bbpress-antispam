@@ -10,7 +10,7 @@ Antispam for bbPress 2.x
 
 == Description ==
 
-bbPress Antispam for bbPress 2.x is inspired on Antispam Bee[http://wordpress.org/extend/plugins/antispam-bee/] and working similar.
+bbPress Antispam for bbPress 2.x is inspired on [Antispam Bee](http://wordpress.org/extend/plugins/antispam-bee/) and working similar.
 No data is send outside your blog.
 
 Spam detection features
