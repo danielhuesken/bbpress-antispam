@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: bbpress, anti-spam, antispam, spam, forum
 Requires at least: 3.2.1
 Tested up to: 3.5
-Stable tag: 1.0
+Stable tag: 1.1
 
 Antispam for bbPress 2.x
 
@@ -34,19 +34,14 @@ This option filters the most spam.
 Renames the name of the textarea for posts and makes an extra hidden with the old name.
 Checks than in with is text filled in.
 
-= Nonce Check =
-The Nonce check adda a nonce to the post new topic or replay and check it.
-That option can only work when in the Template from-reply and from-topic,
-the actions for bbp_theme_before_topic_form_content and bbp_theme_before_reply_form_content are set. (Is in default template.)
-
 = DNSBL Check =
-The check uses a DNS lookup to opm.tornevall.org and ix.dnsbl.manitu.net (http://www.dnsbl.manitu.net/) to check for known spammers IP's.
+The check uses a DNS lookup to opm.tornevall.org, [ix.dnsbl.manitu.net](http://www.dnsbl.manitu.net/) and [sbl/xbl.spamhaus.org](http://www.spamhaus.org/) Blacklists to check for known spammers IP's.
 
 = Fake IP Check =
 Tries to test that the IP of the poster really exist.
 
 = Referrer Check =
-Checks that the sending topic/reply comes for your blog.
+Checks that the sending topic/reply comes form your blog.
 
 = Spam IP Check =
 Looks in your comments and form posts, if a post with the poster IP already marked as spam and mark it too.
@@ -63,6 +58,13 @@ Looks in your comments and form posts, if a post with the same author already ma
 2. Options
 
 == Changelog ==
+= 1.1 =
+* Added: spamhaus.org (http://www.spamhaus.org/) DNSBL
+* Added: IPv6 support for DNSBL
+* Added: IPv6 support fake IP check
+* Added: display DNS Blacklist message to the poster
+* Fixed: Bug if DNSBL moved to spam
+
 = 1.0 =
 * Fixed: Now works with editor
 * Changed: CSS Hack better integration

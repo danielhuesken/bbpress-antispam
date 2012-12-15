@@ -4,7 +4,7 @@
  * Plugin URI: http://danielhuesken.de/portfolio/bbpress-antispam
  * Description: Antispam for bbPress 2.x
  * Author: Daniel Hüsken
- * Version: 1.0
+ * Version: 1.1
  * Author URI: http://danielhuesken.de
  * Text Domain: bbpress-antispam
  * Domain Path: /lang/
@@ -51,7 +51,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 
 		private $spamchart = array();
 
-		private $spamtypes = array( 'csshack', 'DNSBL', 'fakeip', 'referrer', 'ipspam', 'contentspam', 'authorspam' );
+		private $spamtypes = array( 'csshack', 'dnsbl', 'fakeip', 'referrer', 'ipspam', 'contentspam', 'authorspam' );
 
 		public function __construct() {
 
@@ -114,7 +114,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 
 		public function ob_start_bbp_head() {
 
-			if ( get_option('bbpress_antispam_cfg_disableloggedinuser', FALSE) and is_user_logged_in() )
+			if ( get_option('bbpress_antispam_cfg_disableloggedinuser', FALSE) && is_user_logged_in() )
 				return;
 
 			if ( bbp_is_reply_edit() || bbp_is_topic_edit() )
@@ -125,8 +125,8 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 
 		public function ob_callback_bbp_content( $buffer ) {
 
-			$buffer = preg_replace("#<textarea(.*?)name=([\"\'])bbp_topic_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_topic_content_css\" name=\"bbp_topic_content\" style=\"display:none;width:1px;height:1px;\" rows=\"6\" cols=\"2\"></textarea><textarea$1name=$2bbp_topic_content-" . $this->key . "$3$4</textarea>", $buffer, 1);
-			$buffer = preg_replace("#<textarea(.*?)name=([\"\'])bbp_reply_content([\"\'])(.+?)</textarea>#s", "<textarea id=\"bbp_reply_content_css\" name=\"bbp_reply_content\" style=\"display:none;width:1px;height:1px;\" rows=\"6\"></textarea><textarea$1name=$2bbp_reply_content-" . $this->key . "$3$4</textarea>", $buffer, 1);
+			$buffer = preg_replace("#<textarea(.*?)name=([\"\'])bbp_topic_content([\"\'])(.+?)</textarea>#i", "<textarea id=\"bbp_topic_content_css\" name=\"bbp_topic_content\" style=\"display:none;width:1px;height:1px;\" rows=\"6\" cols=\"2\"></textarea><textarea$1name=$2bbp_topic_content-" . $this->key . "$3$4</textarea>", $buffer, 1);
+			$buffer = preg_replace("#<textarea(.*?)name=([\"\'])bbp_reply_content([\"\'])(.+?)</textarea>#i", "<textarea id=\"bbp_reply_content_css\" name=\"bbp_reply_content\" style=\"display:none;width:1px;height:1px;\" rows=\"6\"></textarea><textarea$1name=$2bbp_reply_content-" . $this->key . "$3$4</textarea>", $buffer, 1);
 
 			return $buffer;
 		}
@@ -136,7 +136,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			if ( bbp_is_reply_edit() || bbp_is_topic_edit() )
 				return $output;
 
-			if ( get_option('bbpress_antispam_cfg_disableloggedinuser', FALSE) and is_user_logged_in() )
+			if ( get_option('bbpress_antispam_cfg_disableloggedinuser', FALSE) && is_user_logged_in() )
 				return $output;
 
 			if ( $args[ 'context' ] != 'topic' && $args[ 'context' ] != 'reply' )
@@ -152,7 +152,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 
 		public function post_pre_content( $content ) {
 
-			if ( get_option( 'bbpress_antispam_cfg_disableloggedinuser', FALSE ) and is_user_logged_in() )
+			if ( get_option( 'bbpress_antispam_cfg_disableloggedinuser', FALSE ) && is_user_logged_in() )
 				return $content;
 
 			if ( get_option('bbpress_antispam_cfg_checkcsshack', 'block') == 'block' ) {
@@ -174,13 +174,14 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 				}
 			}
 			//Filter spam
-			if ( get_option( 'bbpress_antispam_cfg_checkdnsbl', 'block' ) == 'block' && $this->is_dnsbl_spam() ) {
-				bbp_add_error( 'bbp_topic_content', __( '<strong>bbPress ANTISPAM</strong>: DNSBL!', 'bbpress-antispam' ) );
-				$this->count_spam( 'DNSBL' );
+			$dnsbl = $this->is_dnsbl_spam();
+			if ( get_option( 'bbpress_antispam_cfg_checkdnsbl', 'block' ) == 'block' && $dnsbl ) {
+				bbp_add_error( 'bbp_topic_content', sprintf( __( '<strong>bbPress ANTISPAM</strong>: DNSBL (%s)!', 'bbpress-antispam' ), $dnsbl ) );
+				$this->count_spam( 'dnsbl' );
 
 				return $content;
 			}
-			if ( get_option( 'bbpress_antispam_cfg_checkfakeip', 'spam' ) == 'block' && $this->is_fake_ip() ) {
+			if ( get_option( 'bbpress_antispam_cfg_checkfakeip', 'off' ) == 'block' && $this->is_fake_ip() ) {
 				bbp_add_error( 'bbp_topic_content', __( '<strong>bbPress ANTISPAM</strong>: Fake IP!', 'bbpress-antispam' ) );
 				$this->count_spam( 'fakeip' );
 
@@ -210,18 +211,19 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 
 		public function post_pre_insert( $post_data ) {
 
-			if ( get_option( 'bbpress_antispam_cfg_disableloggedinuser', FALSE ) and is_user_logged_in() )
+			if ( get_option( 'bbpress_antispam_cfg_disableloggedinuser', FALSE ) && is_user_logged_in() )
 				return $post_data;
 
-			if ( get_option( 'bbpress_antispam_cfg_checkdnsbl', 'block' ) == 'spam' && $this->is_honey_spam() ) {
+			$dnsbl = $this->is_dnsbl_spam();
+			if ( get_option( 'bbpress_antispam_cfg_checkdnsbl', 'block' ) == 'spam' && $dnsbl ) {
 				if ( get_option( 'bbpress_antispam_cfg_prependspamtitle', TRUE ) )
-					$post_data[ 'post_content' ] = __( 'bbPress ANTISPAM: DNSBL:', 'bbpress-antispam' ) . " " . $post_data[ 'post_content' ];
+					$post_data[ 'post_content' ] = sprintf( __( 'bbPress ANTISPAM: DNSBL (%s):', 'bbpress-antispam' ), $dnsbl ) . " " . $post_data[ 'post_content' ];
 				$post_data[ 'post_status' ] = bbp_get_spam_status_id();
-				$this->count_spam( 'honey' );
+				$this->count_spam( 'dnsbl' );
 
 				return $post_data;
 			}
-			if ( get_option( 'bbpress_antispam_cfg_checkfakeip', 'spam' ) == 'spam' && $this->is_fake_ip() ) {
+			if ( get_option( 'bbpress_antispam_cfg_checkfakeip', 'off' ) == 'spam' && $this->is_fake_ip() ) {
 				if ( get_option( 'bbpress_antispam_cfg_prependspamtitle', TRUE ) )
 					$post_data[ 'post_content' ] = __( 'bbPress ANTISPAM: Fake IP:', 'bbpress-antispam' ) . " " . $post_data[ 'post_content' ];
 				$post_data[ 'post_status' ] = bbp_get_spam_status_id();
@@ -275,7 +277,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 		}
 
 		public function send_mail_reply( $reply_id, $topic_id ) {
-			if ( ( get_option( 'bbpress_antispam_cfg_sendmail', 'off' ) == 'spam' and bbp_get_reply_status( $reply_id ) != bbp_get_spam_status_id() ) )
+			if ( ( get_option( 'bbpress_antispam_cfg_sendmail', 'off' ) == 'spam' && bbp_get_reply_status( $reply_id ) != bbp_get_spam_status_id() ) )
 				return;
 			$author_mail = bbp_get_reply_author_email( $reply_id );
 			$author_name = bbp_get_reply_author_display_name( $reply_id );
@@ -313,7 +315,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 		}
 
 		public function send_mail_topic( $topic_id ) {
-			if ( ( get_option( 'bbpress_antispam_cfg_sendmail', 'off' ) == 'spam' and bbp_get_topic_status( $topic_id ) != bbp_get_spam_status_id() ) )
+			if ( ( get_option( 'bbpress_antispam_cfg_sendmail', 'off' ) == 'spam' && bbp_get_topic_status( $topic_id ) != bbp_get_spam_status_id() ) )
 				return;
 			$author_mail = bbp_get_topic_author_email( $topic_id );
 			$author_name = bbp_get_topic_author_display_name( $topic_id );
@@ -350,28 +352,38 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			@wp_mail( get_option( 'bbpress_antispam_cfg_sendmailto', get_bloginfo( 'admin_email' ) ), $subject, $notify_message, $message_headers );
 		}
 
-		private function is_nonce_spam() {
-
-			$result = isset( $_POST[ '_bbp_as_' . $this->key ] ) ? wp_verify_nonce( $_POST[ '_bbp_as_' . $this->key ], 'bbp-form-post' ) : FALSE;
-
-			if ( $result )
-				return FALSE;
-			else
-				return TRUE;
-		}
-
 		private function is_dnsbl_spam() {
 
-			if ( ! function_exists( 'checkdnsrr' ) )
+			if ( ! function_exists( 'dns_get_record' ) )
 				return FALSE;
 
-			$reverse_ip = implode( '.', array_reverse( explode( '.', bbp_current_author_ip() ) ) );
+			$ip = bbp_current_author_ip();
 
-			if ( checkdnsrr( $reverse_ip  . '.opm.tornevall.org.', 'A') )
-				return TRUE;
+			if ( strstr( $ip, ':') ) {
+				//ipv6 (DNSxLs rfc5782)
+				$hex = unpack( "H*hex" , inet_pton( $ip ) );
+				$ip = substr( preg_replace( "/([A-f0-9]{4})/", "$1:", $hex[ 'hex' ] ), 0, -1);
+				$oktets = array_reverse( explode( ':', $ip ) );
+				foreach ($oktets as $key => $oktet) {
+					$oktets[ $key ] = implode( '.', array_reverse( str_split( $oktet ) ) );
+				}
+				$reverse_ip = implode( '.', $oktets);
+			} else {
+				//ipv4
+				$reverse_ip = implode( '.', array_reverse( explode( '.', $ip ) ) );
+			}
 
-			if ( checkdnsrr( $reverse_ip  . '.ix.dnsbl.manitu.net.', 'A') )
-				return TRUE;
+			if ( $text = dns_get_record( $reverse_ip  . '.opm.tornevall.org.', DNS_TXT ) )
+				return '[' . $text[0]['txt'] . ']';
+
+			if ( $text = dns_get_record( $reverse_ip  . '.ix.dnsbl.manitu.net.', DNS_TXT ) )
+				return '[' . $text[0]['txt'] . ']';
+
+			if ( $text = dns_get_record( $reverse_ip  . '.sbl.spamhaus.org.', DNS_TXT ) )
+				return '[' . $text[0]['txt'] . ']';
+
+			if ( $text = dns_get_record( $reverse_ip  . '.xbl.spamhaus.org.', DNS_TXT ) )
+				return '[' . $text[0]['txt'] . ']';
 
 			return FALSE;
 
@@ -380,13 +392,21 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 		private function is_fake_ip() {
 
 			$ip = bbp_current_author_ip();
-			$host = gethostbyaddr( $ip );
-			if ( $host == $ip ) //check the host is get
+
+			if ( $ip == '127.0.0.1' || $ip == '::1:'  )
 				return FALSE;
-			$hostip = gethostbyname( $host );
-			if ( $hostip == $host ) //check the host ip is get
+
+			$hostbyip = gethostbyaddr( $ip );
+
+			if ( strstr( $ip, ':') ) //ipv6
+				return  $ip != $hostbyip;
+
+			if ( $hostbyip == $ip ) //check the host is get
 				return FALSE;
-			if ( $ip == $hostip or $ip == '127.0.0.1' )
+			$hostbyname = gethostbyname( $hostbyip );
+			if ( $hostbyname == $hostbyip ) //check the host ip is get
+				return FALSE;
+			if ( $ip == $hostbyname  )
 				return FALSE;
 			else
 				return TRUE;
@@ -397,7 +417,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			$url 	 = strtolower( home_url() );
 			$referer = strtolower( wp_get_referer() );
 
-			if ( strpos($referer, $url) === 0 ) {
+			if ( ! strstr($referer, $url) ) {
 				return TRUE;
 			}
 
@@ -410,10 +430,10 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			$ip = bbp_current_author_ip();
 			if ( empty( $ip ) )
 				return TRUE;
-			$found = $wpdb->get_var( $wpdb->prepare( "SELECT `comment_ID` FROM `$wpdb->comments` WHERE `comment_approved` = 'spam' AND `comment_author_IP` = %s LIMIT 1", (string)$ip ) );
+			$found = $wpdb->get_var( $wpdb->prepare( "SELECT `comment_ID` FROM `$wpdb->comments` WHERE `comment_approved` = 'spam' AND `comment_author_IP` = %s LIMIT 1", $ip ) );
 			if ( $found )
 				return TRUE;
-			$found = $wpdb->get_var( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id WHERE p.post_status = 'spam' AND (p.post_type ='reply' OR p.post_type ='topic') AND m.meta_key = '_bbp_author_ip' AND m.meta_value = %s LIMIT 1", (string)$ip ) );
+			$found = $wpdb->get_var( $wpdb->prepare( "SELECT p.ID FROM $wpdb->posts p LEFT JOIN $wpdb->postmeta m ON p.ID = m.post_id WHERE p.post_status = 'spam' AND (p.post_type ='reply' OR p.post_type ='topic') AND m.meta_key = '_bbp_author_ip' AND m.meta_value = %s LIMIT 1", $ip ) );
 			if ( $found )
 				return TRUE;
 
@@ -485,8 +505,8 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
         <script type="text/javascript" src="https://www.google.com/jsapi"></script>
         <script type="text/javascript">
             google.load("visualization", "1", {packages:["corechart"]});
-            google.setOnLoadCallback(drawChart);
-            function drawChart() {
+            google.setOnLoadCallback(drawChartbbPressAntispam);
+            function drawChartbbPressAntispam() {
                 var data = new google.visualization.DataTable();
                 data.addColumn('string', '<?PHP _e( 'Date', 'bbpress-antispam' ); ?>');
                 data.addColumn('number', '<?PHP _e( 'Summary', 'bbpress-antispam' ); ?>');
@@ -534,7 +554,8 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 				return $links;
 
 			if ( $file == $this->plugin_base_name . '/bbpress-antispam.php' ) {
-				$links[ ] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=DYTLEJTRVDWAU" target="_blank">' . __( 'Donate', 'bbpress-antispam' ) . '</a>';
+				$links[ ] = __( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CS7BVQ6TTCRYU" target="_blank">Donate</a>', 'bbpress-antispam' );
+				$links[ ] = __( '<a href="https://flattr.com/donation/give/to/danielhuesken" target="_blank">Flattr</a>', 'bbpress-antispam' );
 			}
 
 			return $links;
@@ -551,9 +572,10 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 															 '<p><strong>' . __( 'For more information:', 'bbpress-antispam' ) . '</strong></p><p>' .
 															 ' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/" target="_blank">Wordpress Plugin Site</a>', 'bbpress-antispam' ) . ' |' .
 															 ' ' . __( '<a href="http://danielhuesken.de/portfolio/bbpress-antispam/" target="_blank">Plugin Site</a>', 'bbpress-antispam' ) . ' |' .
-															 ' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/faq/" target="_blank">FAQ</a>', 'backwpup' ) . ' |' .
+															 ' ' . __( '<a href="http://wordpress.org/extend/plugins/bbpress-antispam/faq/" target="_blank">FAQ</a>', 'bbpress-antispam' ) . ' |' .
 															 ' ' . __( '<a href="http://wordpress.org/tags/bbpress-antispam/" target="_blank">Support Forums</a>', 'bbpress-antispam' ) . ' |' .
 															 ' ' . __( '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CS7BVQ6TTCRYU" target="_blank">Donate</a>', 'bbpress-antispam' ) . ' |' .
+															 ' ' . __( '<a href="https://flattr.com/donation/give/to/danielhuesken" target="_blank">Flattr</a>', 'bbpress-antispam' ) . ' |' .
 															 ' ' . __( '<a href="https://plus.google.com/109825920160870159805/" target="_blank">Google+</a>', 'bbpress-antispam' ) . ' ' .
 															 '</p>'
 													) );
@@ -575,7 +597,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			register_setting( 'bbpress', 'bbpress_antispam_cfg_checkcsshack', 'strval' );
 
 			add_settings_field( 'bbpress_antispam_cfg_checkdnsbl', __( 'Check DNSBL', 'bbpress-antispam' ), array( $this, 'option_callback_checkdnsbl' ), 'bbpress', 'bbpress_antispam' );
-			register_setting( 'bbpress', 'bbpress_antispam_cfg_checkhoney', 'strval' );
+			register_setting( 'bbpress', 'bbpress_antispam_cfg_checkdnsbl', 'strval' );
 
 			add_settings_field( 'bbpress_antispam_cfg_checkfakeip', __( 'Check for fake IP address', 'bbpress-antispam' ), array( $this, 'option_callback_checkfakeip' ), 'bbpress', 'bbpress_antispam' );
 			register_setting( 'bbpress', 'bbpress_antispam_cfg_checkfakeip', 'strval' );
@@ -668,11 +690,11 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
         <label for="bbpress_antispam_cfg_checkfakeip_block"><?php _e( 'Block', 'bbpress-antispam' ); ?></label>
         <br/>
         <input id="bbpress_antispam_cfg_checkfakeip_spam" name="bbpress_antispam_cfg_checkfakeip" type="radio"
-               value="spam" <?php checked( get_option( 'bbpress_antispam_cfg_checkfakeip', 'spam' ) == 'spam' ); ?> />
+               value="spam" <?php checked( get_option( 'bbpress_antispam_cfg_checkfakeip' ) == 'spam' ); ?> />
         <label for="bbpress_antispam_cfg_checkfakeip_spam"><?php _e( 'Move to Spam', 'bbpress-antispam' ); ?></label>
         <br/>
         <input id="bbpress_antispam_cfg_checkfakeip_off" name="bbpress_antispam_cfg_checkfakeip" type="radio"
-               value="off" <?php checked( get_option( 'bbpress_antispam_cfg_checkfakeip' ) == 'off' ); ?> />
+               value="off" <?php checked( get_option( 'bbpress_antispam_cfg_checkfakeip', 'off' ) == 'off' ); ?> />
         <label for="bbpress_antispam_cfg_checkfakeip_off"><?php _e( 'Disable', 'bbpress-antispam' ); ?></label>
 		<?php
 		}
@@ -759,7 +781,7 @@ if ( ! class_exists( 'bbPress_Antispam' ) ) {
 			foreach( $this->spamchart as $date => $spams) {
 				//move key to a other
 				if ( isset( $spams[ 'honey' ] ) )
-					$this->spamchart[ $date ][ 'DNSBL' ] = $spams[ 'honey' ];
+					$this->spamchart[ $date ][ 'dnsbl' ] = $spams[ 'honey' ];
 				// delete not longer needed;
 				foreach ( $spams as $key => $value ) {
 					if ( ! in_array( $key, $this->spamtypes ) )
